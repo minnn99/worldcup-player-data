@@ -5,6 +5,13 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <body>
+    <!-- 直接アクセス時のメッセージ表示 -->
+    @if(session('message'))
+        <div class="alert alert-warning">
+            {{ session('message') }}
+        </div>
+    @endif
+
     <table>
         <thead>
             <tr>
@@ -30,15 +37,10 @@
                 <td>{{ $player->birth }}</td>
                 <td>{{ $player->height }}</td>
                 <td>{{ $player->weight }}</td>
-                <td><a href="{{ route('players.detail', $player->id) }}" id="detailed" class="detail-link">詳細</a></td>
+                <td><a href="{{ route('players.detail', ['id' => $player->id, 'token' => $accessToken]) }}" id="detailed" class="detail-link">詳細</a></td>
             </tr>
             @endforeach
         </tbody>
     </table>
-
-    <!-- ペイジネーション -->
-    <div class="pagination">
-        {{ $players->links() }}
-    </div>
 </body>
 </html>
