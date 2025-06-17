@@ -6,7 +6,6 @@
 </head>
 <body>
     <h1>▪️選手データ</h1>
-    
     <div class="player-detail">
         <table>
             <tr>

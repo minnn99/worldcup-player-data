@@ -36,7 +36,7 @@
         </tbody>
     </table>
 
-    <!-- 페이지네이션 -->
+    <!-- ペイジネーション -->
     <div class="pagination">
         {{ $players->links() }}
     </div>
