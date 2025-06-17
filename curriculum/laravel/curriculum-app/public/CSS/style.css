@@ -1,0 +1,92 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 2rem;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+th,
+td {
+    border: 2px solid #ffffff;
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    background-color: #d3d3d3;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #f0f0f0;
+}
+
+tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+.detail-link {
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    color: blue;
+    text-decoration: underline;
+    margin: 0 4px;
+}
+
+.pagination .current {
+    font-weight: bold;
+    color: black;
+}
+
+.pagination svg {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+}
+
+/* detail page styles */
+
+.player-detail {
+    margin: 20px 0;
+}
+
+.player-detail table {
+    width: 50%;
+    margin: 0;
+}
+
+.player-detail th {
+    background-color: #f0f0f0;
+    text-align: left;
+    width: 30%;
+}
+
+.player-detail td {
+    text-align: left;
+}
+
+.actions {
+    margin-top: 20px;
+}
+
+.back-link {
+    color: blue;
+    text-decoration: underline;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+}
