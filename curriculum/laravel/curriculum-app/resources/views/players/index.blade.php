@@ -37,7 +37,7 @@
                 <td>{{ $player->birth }}</td>
                 <td>{{ $player->height }}</td>
                 <td>{{ $player->weight }}</td>
-                <td><a href="{{ route('players.detail', ['id' => $player->id, 'token' => $accessToken]) }}" id="detailed" class="detail-link">詳細</a></td>
+                <td><a href="{{ route('players.detail', ['id' => $player->id, 'token' => $accessToken]) }}" id="detailed-{{ $player->id }}" class="detail-link">詳細</a></td>
             </tr>
             @endforeach
         </tbody>
