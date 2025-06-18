@@ -42,5 +42,10 @@
             @endforeach
         </tbody>
     </table>
+
+        <div class="pagination">
+            {{ $players->links() }}
+        </div>
+    </div>
 </body>
 </html>
