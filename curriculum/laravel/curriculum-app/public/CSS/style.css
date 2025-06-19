@@ -132,7 +132,10 @@ tr:nth-child(odd) {
 }
 
 .actions {
-    margin-top: 20px;
+    max-width: 600px;
+    width: 100%;
+    display: flex;
+    text-align: center;
 }
 
 .actions a {
@@ -148,6 +151,7 @@ tr:nth-child(odd) {
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    width: 100%;
 }
 
 .back-link:hover {
