@@ -5,7 +5,10 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <body>
-    <h1>▪️選手データ</h1>
+  <div class="detail-container">
+
+    <h1 class="detail-header">▪️選手データ</h1>
+    
     <div class="player-detail">
         <table>
             <tr>
@@ -46,5 +49,6 @@
     <div class="actions">
         <a href="{{ url('/') }}" class="back-link">選手一覧に戻る</a>
     </div>
+  </div>
 </body>
 </html>
