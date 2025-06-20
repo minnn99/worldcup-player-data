@@ -18,30 +18,36 @@
         </div>
     @endif
 
+    @php
+        // フォームフィールドの定義
+        $fields = [
+            ['label' => '背番号:', 'name' => 'uniform_num', 'type' => 'number'],
+            ['label' => 'ポジション:', 'name' => 'position', 'type' => 'text'],
+            ['label' => '名前:', 'name' => 'name', 'type' => 'text'],
+            ['label' => '所属:', 'name' => 'club', 'type' => 'text'],
+            ['label' => '誕生日:', 'name' => 'birth', 'type' => 'date'],
+            ['label' => '身長 (cm):', 'name' => 'height', 'type' => 'number'],
+            ['label' => '体重 (kg):', 'name' => 'weight', 'type' => 'number'],
+        ];
+    @endphp
+
     <!-- 編集フォーム -->
     <form method="POST" action="{{ route('players.update', $player->id) }}">
         @csrf
         @method('PUT')
         
-        <div class="player-edit-form">
-            <label for="uniform_num">背番号:</label>
-            <input type="number" id="uniform_num" name="uniform_num" value="{{ old('uniform_num', $player->uniform_num) }}" required>
-        </div>
-
-        <div class="player-edit-form">
-            <label for="position">ポジション:</label>
-            <input type="text" id="position" name="position" value="{{ old('position', $player->position) }}" required>
-        </div>
-
-        <div class="player-edit-form">
-            <label for="name">名前:</label>
-            <input type="text" id="name" name="name" value="{{ old('name', $player->name) }}" required>
-        </div>
-
-        <div class="player-edit-form">
-            <label for="club">所属:</label>
-            <input type="text" id="club" name="club" value="{{ old('club', $player->club) }}" required>
-        </div>
+        @foreach($fields as $field)
+            <div class="player-edit-form">
+                <label for="{{ $field['name'] }}">{{ $field['label'] }}</label>
+                <input
+                    type="{{ $field['type'] }}"
+                    id="{{ $field['name'] }}"
+                    name="{{ $field['name'] }}"
+                    value="{{ old($field['name'], $player->{$field['name']}) }}"
+                    required
+                >
+            </div>
+        @endforeach
 
         <div class="player-edit-form">
             <label for="country_id">国:</label>
@@ -53,21 +59,6 @@
                     </option>
                 @endforeach
             </select>
-        </div>
-
-        <div class="player-edit-form">
-            <label for="birth">誕生日:</label>
-            <input type="date" id="birth" name="birth" value="{{ old('birth', $player->birth) }}" required>
-        </div>
-
-        <div class="player-edit-form">
-            <label for="height">身長 (cm):</label>
-            <input type="number" id="height" name="height" value="{{ old('height', $player->height) }}" required>
-        </div>
-
-        <div class="player-edit-form">
-            <label for="weight">体重 (kg):</label>
-            <input type="number" id="weight" name="weight" value="{{ old('weight', $player->weight) }}" required>
         </div>
 
         <div class="form-actions">
