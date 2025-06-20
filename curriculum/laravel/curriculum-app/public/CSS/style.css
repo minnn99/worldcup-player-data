@@ -101,30 +101,39 @@ tr:nth-child(even) {
 
 /* Detail page styles */
 .detail-container {
-    display: flex;
     flex-direction: column;
     align-items: center;
     padding: 1.25rem;
     box-sizing: border-box;
+    margin: 0 auto;
+    width: 800px;
+}
+
+.detail-header {
+    align-self: flex-start;
+    position: static;
 }
 
 .player-detail {
-    max-width: 600px;
     width: 100%;
     text-align: center;
+    margin-top: 0;
 }
 
 .player-detail table {
+    margin: 0 auto;
+    width: 100%;
     font-size: 1rem;
 }
 
 .player-detail th {
     background-color: var(--light-gray);
-    width: 30%;
+    width: 20%;
 }
 
 .player-detail td {
     word-break: keep-all;
+    min-width: 400px;
     line-height: 1.6;
 }
 
@@ -133,9 +142,10 @@ tr:nth-child(even) {
 }
 
 .actions {
-    max-width: 600px;
-    width: 100%;
+    width: 600px;
     display: flex;
+    justify-content: center;
+    margin: 2rem auto 0;
     text-align: center;
 }
 

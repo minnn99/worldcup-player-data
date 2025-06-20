@@ -32,7 +32,7 @@ class PlayersController extends Controller
     // 選手詳細情報を表示
     public function detail(Request $request, $id)
     {
-        $player = Player::with(['country', 'goals'])->find($id);
+        $player = Player::with(['country'])->find($id);
         
         if (!$player) {
             return redirect('/')->with('message', '選手が見つかりません。');
@@ -41,9 +41,14 @@ class PlayersController extends Controller
         // 得点情報を取得
         $goals = DB::table('goals')
             ->join('pairings', 'goals.pairing_id', '=', 'pairings.id')
+            ->join('countries as enemy', 'pairings.enemy_country_id', '=', 'enemy.id')
             ->where('goals.player_id', $id)
-            ->select('goals.goal_time', 'goals.pairing_id')
-            ->orderBy('goals.pairing_id')
+            ->select([
+                'goals.goal_time',
+                'pairings.kickoff',
+                'enemy.name as enemy_country_name'
+            ])
+            ->orderBy('pairings.kickoff')
             ->orderBy('goals.goal_time')
             ->get();
 

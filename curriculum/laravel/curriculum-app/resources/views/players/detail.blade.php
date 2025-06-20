@@ -50,17 +50,25 @@
             </tr>
             <tr>
                 <th>総得点</th>
-                <td>{{ $goals->count() }}点</td>
+                <td>
+                    @if($goals->count() > 0)
+                        {{ $goals->count() }}点
+                    @else
+                        無得点です。
+                    @endif
+                </td>
             </tr>
             <tr>
                 <th>得点履歴</th>
                 <td>
                     @if($goals->count() > 0)
                         @foreach($goals as $goal)
-                            • コロンビア戦 前半{{ $goal->goal_time }}分: {{ $loop->iteration }}点目<br>
+                            • {{ Carbon\Carbon::parse($goal->kickoff)->format('Y-m-d H:i:s') }}開始 
+                              {{ $goal->enemy_country_name }}戦 
+                              {{ $goal->goal_time }}: {{ $loop->iteration }}点目<br>
                         @endforeach
                     @else
-                        無得点です。
+                        
                     @endif
                 </td>
             </tr>
