@@ -1,19 +1,31 @@
+:root {
+    --primary-color: #007bff;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --light-gray: #f0f0f0;
+    --border-gray: #ddd;
+    --text-dark: #333;
+    --text-light: #fafafa;
+}
+
+/* Base styles */
 body {
     font-family: Arial, sans-serif;
     margin: 2rem;
-    color: #333;
+    color: var(--text-dark);
 }
 
+/* Table styles */
 table {
     border-collapse: collapse;
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 1.25rem;
 }
 
 th,
 td {
-    border: 2px solid #ffffff;
-    padding: 8px;
+    border: 2px solid #fff;
+    padding: 0.5rem;
     text-align: center;
 }
 
@@ -23,68 +35,52 @@ th {
 }
 
 tr:nth-child(even) {
-    background-color: #f0f0f0;
+    background-color: var(--light-gray);
 }
 
-tr:nth-child(odd) {
-    background-color: #ffffff;
-}
-
+/* Button styles */
 .btn {
     display: inline-block;
-    padding: 4px 6px;
-    margin: 2px;
+    padding: 0.25rem 0.375rem;
+    margin: 0.125rem;
     border: none;
     border-radius: 4px;
-    color: #fafafa;
+    color: var(--text-light);
     text-decoration: none;
     cursor: pointer;
 }
 
 .detail-link {
-    background-color: #28a745;
+    background-color: var(--success-color);
 }
-
 .edit-link {
-    background-color: #007bff;
+    background-color: var(--primary-color);
 }
-
 .delete-button {
-    background-color: #dc3545;
+    background-color: var(--danger-color);
     font-size: 1rem;
 }
 
+/* Pagination styles */
 .pagination {
-    margin: 20px 0;
     text-align: center;
 }
 
-.pagination nav {
-    display: inline-block;
-}
-
-.pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 .pagination svg {
-    display: inline-block;
+    width: 1.25rem;
+    height: 1.25rem;
     vertical-align: middle;
-    width: 20px;
-    height: 20px;
 }
 
 .pagination .page-item {
-    margin: 0 2px;
+    margin: 0 0.125rem;
 }
 
 .pagination .page-link {
-    padding: 8px 12px;
+    padding: 0.5rem 0.75rem;
     text-decoration: none;
-    border: 1px solid #ddd;
-    color: #333;
+    border: 1px solid var(--border-gray);
+    color: var(--text-dark);
 }
 
 .pagination .page-link:hover {
@@ -92,9 +88,9 @@ tr:nth-child(odd) {
 }
 
 .pagination .page-item.active .page-link {
-    background-color: #007bff;
+    background-color: var(--primary-color);
     color: white;
-    border-color: #007bff;
+    border-color: var(--primary-color);
 }
 
 .pagination .page-item.disabled .page-link {
@@ -103,14 +99,12 @@ tr:nth-child(odd) {
     cursor: not-allowed;
 }
 
-/* detail page styles */
-
+/* Detail page styles */
 .detail-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 20px;
+    padding: 1.25rem;
     box-sizing: border-box;
 }
 
@@ -121,14 +115,21 @@ tr:nth-child(odd) {
 }
 
 .player-detail table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 16px;
+    font-size: 1rem;
 }
 
 .player-detail th {
-    background-color: #f0f0f0;
+    background-color: var(--light-gray);
     width: 30%;
+}
+
+.player-detail td {
+    word-break: keep-all;
+    line-height: 1.6;
+}
+
+.player-detail td br {
+    margin-bottom: 0.5rem;
 }
 
 .actions {
@@ -138,30 +139,27 @@ tr:nth-child(odd) {
     text-align: center;
 }
 
-.actions a {
-    text-decoration: none;
-}
-
 .back-link {
-    background-color: #333;
-    color: #fafafa;
+    background-color: var(--text-dark);
+    color: var(--text-light);
     border: none;
-    padding: 12px 24px;
+    padding: 0.75rem 1.5rem;
     border-radius: 5px;
-    font-size: 16px;
+    font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
     width: 100%;
+    text-decoration: none;
 }
 
 .back-link:hover {
     background-color: #000;
 }
 
-/* alert styles */
+/* Alert styles */
 .alert {
-    padding: 15px;
-    margin-bottom: 20px;
+    padding: 0.9375rem;
+    margin-bottom: 1.25rem;
     border: 1px solid transparent;
     border-radius: 4px;
 }

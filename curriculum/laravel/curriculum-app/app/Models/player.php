@@ -32,4 +32,9 @@ class Player extends Model
     {
         return $query->where('del_flg', 0);
     }
+    // Playerに属するGoalsとのリレーション
+    public function goals()
+    {
+        return $this->hasMany(Goal::class);
+    }
 }

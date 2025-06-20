@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>選手詳細 - {{ $player->name }}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>選手詳細</title>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <body>
   <div class="detail-container">
-
     <h1 class="detail-header">▪️選手データ</h1>
     
     <div class="player-detail">
@@ -28,7 +29,11 @@
                 <td>{{ $player->name }}</td>
             </tr>
             <tr>
-                <th>配属</th>
+                <th>国</th>
+                <td>{{ $player->country->name }}</td>
+            </tr>
+            <tr>
+                <th>所属</th>
                 <td>{{ $player->club }}</td>
             </tr>
             <tr>
@@ -37,15 +42,31 @@
             </tr>
             <tr>
                 <th>身長</th>
-                <td>{{ $player->height }}cm</td>
+                <td>{{ $player->height }}</td>
             </tr>
             <tr>
                 <th>体重</th>
-                <td>{{ $player->weight }}kg</td>
+                <td>{{ $player->weight }}</td>
+            </tr>
+            <tr>
+                <th>総得点</th>
+                <td>{{ $goals->count() }}点</td>
+            </tr>
+            <tr>
+                <th>得点履歴</th>
+                <td>
+                    @if($goals->count() > 0)
+                        @foreach($goals as $goal)
+                            • コロンビア戦 前半{{ $goal->goal_time }}分: {{ $loop->iteration }}点目<br>
+                        @endforeach
+                    @else
+                        無得点です。
+                    @endif
+                </td>
             </tr>
         </table>
     </div>
-    
+
     <div class="actions">
         <a href="{{ url('/') }}" class="back-link">選手一覧に戻る</a>
     </div>
