@@ -165,13 +165,17 @@ tr:nth-child(even) {
     width: 600px;
     display: flex;
     justify-content: center;
+    align-items: center;
     margin: 2rem auto 0;
     text-align: center;
     flex-direction: column;
 }
 
 .back-link,
-.submit-btn {
+.submit-btn,
+.cancel-link {
+    display: inline-block;
+    box-sizing: border-box;
     border: none;
     padding: 0.75rem 1.5rem;
     border-radius: 5px;
@@ -215,17 +219,13 @@ tr:nth-child(even) {
 }
 
 /* Alert styles */
-.alert {
-    padding: 0.9375rem;
-    margin-bottom: 1.25rem;
-    border: 1px solid transparent;
-    border-radius: 4px;
-}
-
-.alert-warning {
-    color: #8a6d3b;
-    background-color: #fcf8e3;
-    border-color: #faebcc;
+.edit-table .error {
+    order: 1;
+    font-size: 0.75rem;
+    color: var(--danger-color);
+    display: block;
+    text-align: left;
+    margin-bottom: 0.5rem;
 }
 
 /* Edit page styles */
@@ -254,7 +254,7 @@ tr:nth-child(even) {
 
 .edit-table td {
     padding: 10px;
-    position: relative;
+    flex-direction: column;
 }
 
 .edit-table input,
@@ -264,6 +264,9 @@ tr:nth-child(even) {
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
+    order: 2;
+    display: block;
+    margin: 0 auto;
 }
 
 .edit-table select {

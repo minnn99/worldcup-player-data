@@ -8,6 +8,7 @@ use App\Models\Country;
 use App\Models\Goal;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\UpdatePlayerRequest;
 
 class PlayersController extends Controller
 {
@@ -56,48 +57,29 @@ class PlayersController extends Controller
     }
 
     // 選手情報編集画面を表示（GET通信）
-    public function edit($id) {
-        // 指定されたIDの選手データを取得（論理削除されていないもののみ）
-        $player = Player::with('country')->active()->find($id);
-        
-        // 選手が見つからない場合
-        if (!$player) {
-            return redirect('/')->with('message', '選手が見つかりません。');
-        }
-        
-        // 全ての国を取得
+    public function edit($id)
+    {
+        $player = Player::findOrFail($id);
         $countries = Country::all();
         
-        // 編集画面を表示
-        return view('players.edit', ['player' => $player, 'countries' => $countries]);
+        $positions = [
+            'GK' => 'ゴールキーパー',
+            'DF' => 'ディフェンダー',
+            'MF' => 'ミッドフィールダー',
+            'FW' => 'フォワード'
+        ];
+        
+        return view('players.edit', compact('player', 'countries', 'positions'));
     }
 
     // 選手情報を更新（POST/PUT通信）
-    public function update(Request $request, $id) {
-        // バリデーション
-        $request->validate([
-            'uniform_num' => 'required|integer',
-            'position' => 'required|string|max:10',
-            'name' => 'required|string|max:50',
-            'club' => 'required|string|max:100',
-            'birth' => 'required|date',
-            'height' => 'required|integer',
-            'weight' => 'required|integer',
-            'country_id' => 'required|exists:countries,id'
-        ]);
+    public function update(UpdatePlayerRequest $request, $id)
+    {
+        $player = Player::findOrFail($id);
+        $player->update($request->validated());
 
-        // 選手データを取得
-        $player = Player::active()->find($id);
-        
-        if (!$player) {
-            return redirect('/')->with('message', '選手が見つかりません。');
-        }
-
-        // データを更新
-        $player->update($request->all());
-
-        // 一覧画面にリダイレクト
-        return redirect('/')->with('message', '選手情報を更新しました。');
+        return redirect()->route('players.detail', $player->id)
+            ->with('message', '選手情報を更新しました。');
     }
 
     // 選手を論理削除（DELETE通信）
