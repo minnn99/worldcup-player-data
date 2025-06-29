@@ -101,7 +101,7 @@
             
             <div class="form-actions">
                 <button type="submit" class="submit-btn">更新</button>
-                <a href="{{ route('players.detail', $player->id) }}" class="cancel-link">戻る</a>
+                <a href="{{ route('players.detail', $player->id) }}" class="cancel-link">選手データに戻る</a>
             </div>
         </form>
     </div>
