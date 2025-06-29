@@ -6,16 +6,22 @@ use Illuminate\Database\Eloquent\Model;
 
 class Goal extends Model
 {
-    protected $fillable = ['pairing_id', 'player_id', 'goal_time'];
+    protected $table = 'goals';
     public $timestamps = false;
 
-    public function pairing()
-    {
-        return $this->belongsTo(Pairing::class);
-    }
+    protected $fillable = [
+        'pairing_id',
+        'player_id',
+        'goal_time'
+    ];
 
     public function player()
     {
         return $this->belongsTo(Player::class);
+    }
+
+    public function pairing()
+    {
+        return $this->belongsTo(Pairing::class);
     }
 }

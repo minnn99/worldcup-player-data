@@ -2,17 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Player extends Model
 {
-    use HasFactory;
+    protected $table = 'players';
+    public $timestamps = false;
 
     protected $fillable = [
         'country_id',
         'uniform_num',
-        'position', 
+        'position',
         'name',
         'club',
         'birth',
@@ -21,20 +21,18 @@ class Player extends Model
         'del_flg'
     ];
 
-    // Playerが属するCountryとのリレーション
     public function country()
     {
         return $this->belongsTo(Country::class);
     }
 
-    // 削除されていない選手のみを取得するスコープ
-    public function scopeActive($query)
-    {
-        return $query->where('del_flg', 0);
-    }
-    // Playerに属するGoalsとのリレーション
     public function goals()
     {
         return $this->hasMany(Goal::class);
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('del_flg', 0);
     }
 }

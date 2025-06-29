@@ -2,18 +2,31 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Country extends Model
 {
-    use HasFactory;
+    protected $table = 'countries';
+    public $timestamps = false;
 
-    protected $fillable = ['name'];
+    protected $fillable = [
+        'name',
+        'ranking',
+        'group_name'
+    ];
 
-    // Countryに属するPlayersとのリレーション
     public function players()
     {
         return $this->hasMany(Player::class);
+    }
+
+    public function myPairings()
+    {
+        return $this->hasMany(Pairing::class, 'my_country_id');
+    }
+
+    public function enemyPairings()
+    {
+        return $this->hasMany(Pairing::class, 'enemy_country_id');
     }
 }
