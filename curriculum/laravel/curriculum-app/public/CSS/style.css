@@ -72,7 +72,6 @@ tr:nth-child(even) {
 .delete-button {
     background-color: var(--danger-color);
     transition: background-color 0.3s ease;
-
     font-size: 1rem;
 }
 
@@ -280,4 +279,96 @@ tr:nth-child(even) {
 .form-actions {
     text-align: center;
     margin-top: 20px;
+}
+
+/* Login page styles */
+
+body.login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-container {
+    max-width: 600px;
+    width: 100%;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-form-group {
+    margin-bottom: 25px;
+}
+
+.login-form-group label {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: var(--text-dark);
+}
+
+.login-form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.login-form-group input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.btn-login {
+    width: 100%;
+    padding: 15px;
+    background-color: var(--submit-color);
+    color: var(--text-dark);
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: background-color 0.3s;
+}
+
+.btn-login:hover {
+    background-color: #ffc107;
+}
+
+.register-link {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.register-link a {
+    color: #6c63ff;
+    text-decoration: underline;
+    font-size: 1rem;
+}
+
+.register-link a:hover {
+    color: #5a52d5;
+}
+
+.login-error-message {
+    color: var(--danger-color);
+    font-size: 0.9rem;
+    margin-top: 5px;
+}
+
+.login-success-message {
+    color: var(--success-color);
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 4px;
 }
