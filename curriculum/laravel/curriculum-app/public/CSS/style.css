@@ -124,7 +124,8 @@ tr:nth-child(even) {
     padding: 1.25rem;
     box-sizing: border-box;
     margin: 0 auto;
-    width: 800px;
+    max-width: 800px;
+    width: 100%;
 }
 
 .detail-header {
@@ -227,9 +228,9 @@ tr:nth-child(even) {
     margin-bottom: 0.5rem;
 }
 
-/* Edit page styles */
 .edit-container {
-    width: 800px;
+    max-width: 800px;
+    width: 90%;
     margin: 0 auto;
     padding: 20px;
 }
