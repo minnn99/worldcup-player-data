@@ -36,7 +36,7 @@
     </form>
 
     <div class="register-link">
-      <a href="javascript:void(0);">新規登録はこちら</a>
+      <a href="{{ route('register') }}">新規登録はこちら</a>
     </div>
   </div>
 
