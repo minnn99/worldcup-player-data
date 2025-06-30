@@ -68,7 +68,7 @@ class PlayersController extends Controller
             'FW' => 'フォワード'
         ];
         
-        // 편집 페이지에서 상세 페이지로 돌아가기 위한 토큰 생성
+        // 編集ページから詳細ページに戻るためのトークンを生成
         $token = Str::random(32);
         session(["player_access_token_{$player->id}" => $token]);
         
@@ -81,7 +81,7 @@ class PlayersController extends Controller
         $player = Player::findOrFail($id);
         $player->update($request->validated());
 
-        // 업데이트 후 상세 페이지로 리다이렉트할 때 토큰 생성
+        // 更新後、詳細ページにリダイレクトする際のトークンを生成
         $token = Str::random(32);
         session(["player_access_token_{$player->id}" => $token]);
 
