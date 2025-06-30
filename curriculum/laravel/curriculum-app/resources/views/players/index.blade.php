@@ -12,6 +12,12 @@
         </div>
     @endif
 
+    @if(session('error'))
+        <div class="error-message" style="color: red; padding: 10px; margin-bottom: 20px; border: 1px solid red; border-radius: 4px;">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <table>
         <thead>
             <tr>
@@ -41,7 +47,11 @@
                 <td>{{ $player->birth }}</td>
                 <td>{{ $player->height }}</td>
                 <td>{{ $player->weight }}</td>
-                <td><a href="{{ route('players.detail', ['id' => $player->id, 'token' => $accessToken]) }}" id="detailed-{{ $player->id }}" class=" btn detail-link">詳細</a></td>
+                <td>
+                    <a href="{{ route('players.detail', ['id' => $player->id, 'token' => $accessTokens[$player->id]]) }}" 
+                       id="detailed-{{ $player->id }}" 
+                       class="btn detail-link">詳細</a>
+                </td>
                 <td><a href="{{ route('players.edit', $player->id) }}" id="edit_button" class="btn edit-link">編集</a></td>
                 <td>
                     <form method="POST" action="{{ route('players.destroy', $player->id) }}" style="display:inline;" onsubmit="return confirm('この選手データを削除しますか？')">

@@ -2,44 +2,53 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Hash;
 
-class User extends Authenticatable
+class User extends Model
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    protected $table = 'users';
+    public $timestamps = false; // created_at, updated_at カラムを使用しない
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
-        'name',
+        'country_id',
         'email',
         'password',
+        'role'
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
+    // パスワードをシリアライズ時に非表示にする
     protected $hidden = [
-        'password',
-        'remember_token',
+        'password'
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
+    // パスワードを自動的にハッシュ化する
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = Hash::make($value);
+    }
+
+    // 国とのリレーションを定義
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
+
+    // 管理者かどうかを判定する
+    public function isAdmin()
+    {
+        return $this->role === 0;
+    }
+
+    // 一般ユーザーかどうかを判定する
+    public function isUser()
+    {
+        return $this->role === 1;
+    }
+
+    // 役割のテキストを返す
+    public function getRoleTextAttribute()
+    {
+        return $this->role === 0 ? '管理ユーザー' : '一般ユーザー';
+    }
 }

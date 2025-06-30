@@ -12,22 +12,21 @@ use App\Http\Requests\UpdatePlayerRequest;
 
 class PlayersController extends Controller
 {
-    public function index(){
-        // del_flgが0の選手のみを表示（論理削除済みは除外）
-        // Countryとのリレーションも含めて取得
-        $players = Player::with('country')->active()->paginate(20);
+    public function index()
+    {
+        $players = Player::with('country')
+            ->where('del_flg', 0)  // 論理削除されていない選手のみ表示
+            ->paginate(20);
         
-        // 時間ベースのトークンを生成（10分間有効）
-        $accessToken = Str::random(40);
-        $tokenExpiry = now()->addMinutes(10);
+        // 各選手ごとに個別のアクセストークンを生成
+        $accessTokens = [];
+        foreach ($players as $player) {
+            $token = Str::random(32);
+            $accessTokens[$player->id] = $token;
+            session(["player_access_token_{$player->id}" => $token]);
+        }
         
-        // セッションにトークンと有効期限を保存
-        session([
-            'detail_access_token' => $accessToken,
-            'token_expiry' => $tokenExpiry
-        ]);
-        
-        return view('players.index', ['players' => $players, 'accessToken' => $accessToken]);
+        return view('players.index', compact('players', 'accessTokens'));
     }
     
     // 選手詳細情報を表示
@@ -100,5 +99,34 @@ class PlayersController extends Controller
 
         // 一覧画面にリダイレクトとメッセージ表示
         return redirect('/')->with('message', '選手データを削除しました。');
+    }
+    
+    public function show($id)
+    {
+        // 該当選手のアクセストークンがセッションにあるか確認
+        $sessionToken = session("player_access_token_{$id}");
+        $requestToken = request('token');
+        
+        // トークンがない、または一致しない場合はアクセスを拒否
+        if (!$sessionToken || $sessionToken !== $requestToken) {
+            return redirect('/')->with('error', '選手一覧から選手を選択してください。');
+        }
+        
+        // トークン使用後に削除（使い捨て）
+        session()->forget("player_access_token_{$id}");
+        
+        // del_flg = 0の選手のみ取得
+        $player = Player::with('country')
+            ->where('del_flg', 0)
+            ->find($id);
+        
+        // 選手が存在しない、または論理削除されている場合
+        if (!$player) {
+            return redirect('/')->with('error', 'この選手データは削除されているか存在しません。');
+        }
+        
+        $goals = Goal::with('game')->where('player_id', $id)->get();
+        
+        return view('players.detail', compact('player', 'goals'));
     }
 }
