@@ -68,7 +68,11 @@ class PlayersController extends Controller
             'FW' => 'フォワード'
         ];
         
-        return view('players.edit', compact('player', 'countries', 'positions'));
+        // 편집 페이지에서 상세 페이지로 돌아가기 위한 토큰 생성
+        $token = Str::random(32);
+        session(["player_access_token_{$player->id}" => $token]);
+        
+        return view('players.edit', compact('player', 'countries', 'positions', 'token'));
     }
 
     // 選手情報を更新（POST/PUT通信）
@@ -77,7 +81,11 @@ class PlayersController extends Controller
         $player = Player::findOrFail($id);
         $player->update($request->validated());
 
-        return redirect()->route('players.detail', $player->id)
+        // 업데이트 후 상세 페이지로 리다이렉트할 때 토큰 생성
+        $token = Str::random(32);
+        session(["player_access_token_{$player->id}" => $token]);
+
+        return redirect()->route('players.detail', ['id' => $player->id, 'token' => $token])
             ->with('message', '選手情報を更新しました。');
     }
 
@@ -125,7 +133,8 @@ class PlayersController extends Controller
             return redirect('/')->with('error', 'この選手データは削除されているか存在しません。');
         }
         
-        $goals = Goal::with('game')->where('player_id', $id)->get();
+        // game -> pairingに変更
+        $goals = Goal::with('pairing')->where('player_id', $id)->get();
         
         return view('players.detail', compact('player', 'goals'));
     }
