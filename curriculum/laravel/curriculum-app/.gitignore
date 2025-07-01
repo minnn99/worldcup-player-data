@@ -19,3 +19,6 @@ yarn-error.log
 /.vscode
 *.sql
 curriculum/sql/
+# MySQL 데이터베이스 파일들
+**/mysql/**
+mysql/
