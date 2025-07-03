@@ -1,0 +1,40 @@
+# MySQL 데이터베이스 파일들
+mysql/
+mysql/*
+mysql/**/*
+
+# Docker 관련 파일들
+.env
+.env.local
+.env.*.local
+
+# OS 생성 파일들
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE 관련 파일들
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 로그 파일들
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 런타임 데이터
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# 기타
+node_modules/
