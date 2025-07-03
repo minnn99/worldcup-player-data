@@ -15,6 +15,24 @@ body {
     color: var(--text-dark);
 }
 
+/* ヘッダースタイル */
+.header {
+    padding: 1rem;
+}
+
+.user-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.user-role {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: var(--text-dark);
+}
+
 /* テーブルスタイル */
 table {
     border: #333 solid 2px;
@@ -49,6 +67,10 @@ tr:nth-child(even) {
     color: var(--text-light);
     text-decoration: none;
     cursor: pointer;
+}
+
+.btn.logout-btn {
+    color: var(--text-dark);
 }
 
 .detail-link {

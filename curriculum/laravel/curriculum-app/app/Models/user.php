@@ -22,12 +22,6 @@ class User extends Model
         'password'
     ];
 
-    // パスワードを自動的にハッシュ化する
-    public function setPasswordAttribute($value)
-    {
-        $this->attributes['password'] = Hash::make($value);
-    }
-
     // 国とのリレーション
     public function country()
     {

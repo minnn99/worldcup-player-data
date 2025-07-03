@@ -15,7 +15,16 @@ class PlayersController extends Controller
     public function index(){
         // del_flgが0の選手のみを表示（論理削除済みは除外）
         // Countryとのリレーションも含めて取得
-        $players = Player::with('country')->active()->paginate(20);
+        $query = Player::with('country')->active();
+        
+        // ログインしているユーザーが一般ユーザー（role=1）の場合、
+        // そのユーザーの国の選手を優先的に表示
+        if (session('user_role') === 1 && session('user_country_id')) {
+            $query->orderByRaw('CASE WHEN country_id = ? THEN 0 ELSE 1 END', [session('user_country_id')])
+                  ->orderBy('id');
+        }
+        
+        $players = $query->paginate(20);
         
         // 時間ベースのトークンを生成（10分間有効）
         $accessToken = Str::random(40);
@@ -27,7 +36,10 @@ class PlayersController extends Controller
             'token_expiry' => $tokenExpiry
         ]);
         
-        return view('players.index', ['players' => $players, 'accessToken' => $accessToken]);
+        return view('players.index', [
+            'players' => $players, 
+            'accessToken' => $accessToken
+        ]);
     }
     
     // 選手詳細情報を表示

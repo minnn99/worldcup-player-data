@@ -52,9 +52,9 @@ class AuthController extends Controller
         // ユーザー作成
         $user = User::create([
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => Hash::make($request->password),  // 手動でハッシュ化
             'role' => $request->role,
-            'country_id' => $request->role == 1 ? $request->country_id : 0
+            'country_id' => $request->role == 1 ? $request->country_id : null  // 管理者の場合はnull
         ]);
 
         return redirect()->route('login')->with('success', '新規登録が完了しました。ログインしてください。');
