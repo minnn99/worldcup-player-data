@@ -2,8 +2,6 @@
     --primary-color: #007bff;
     --success-color: #28a745;
     --danger-color: #dc3545;
-    --warning-color: #ffc107;
-    --info-color: #17a2b8;
     --light-gray: #f0f0f0;
     --border-gray: #ddd;
     --text-dark: #333;
@@ -11,65 +9,31 @@
     --submit-color: #ffd700;
 }
 
-/* Base styles */
+/* 基本スタイル */
 body {
     font-family: Arial, sans-serif;
     color: var(--text-dark);
 }
 
-/* Alert styles */
-.alert {
+/* ヘッダースタイル */
+.header {
     padding: 1rem;
-    margin: 1rem 0;
-    border: 1px solid transparent;
-    border-radius: 0.375rem;
+}
+
+.user-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.user-role {
     font-weight: bold;
     font-size: 1.1rem;
+    color: var(--text-dark);
 }
 
-.alert-success {
-    color: #155724;
-    background-color: #d4edda;
-    border-color: #c3e6cb;
-}
-
-.alert-danger {
-    color: #721c24;
-    background-color: #f8d7da;
-    border-color: #f5c6cb;
-}
-
-.alert-warning {
-    color: #856404;
-    background-color: #fff3cd;
-    border-color: #ffeaa7;
-}
-
-.alert-info {
-    color: #0c5460;
-    background-color: #d1ecf1;
-    border-color: #bee5eb;
-}
-
-.error {
-    color: var(--danger-color);
-    font-weight: bold;
-    font-size: 1rem;
-    margin: 0.5rem 0;
-}
-
-.login-error-message {
-    color: var(--danger-color);
-    font-weight: bold;
-    font-size: 1.1rem;
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
-    padding: 0.75rem;
-    border-radius: 0.375rem;
-    margin: 1rem 0;
-}
-
-/* Table styles */
+/* テーブルスタイル */
 table {
     border: #333 solid 2px;
     width: 100%;
@@ -93,7 +57,7 @@ tr:nth-child(even) {
     background-color: var(--light-gray);
 }
 
-/* Button styles */
+/* ボタンスタイル */
 .btn {
     display: inline-block;
     padding: 0.25rem 0.375rem;
@@ -103,6 +67,10 @@ tr:nth-child(even) {
     color: var(--text-light);
     text-decoration: none;
     cursor: pointer;
+}
+
+.btn.logout-btn {
+    color: var(--text-dark);
 }
 
 .detail-link {
@@ -133,7 +101,7 @@ tr:nth-child(even) {
     background-color: #c82333;
 }
 
-/* Pagination styles */
+/* ページネーションスタイル */
 .pagination {
     text-align: center;
 }
@@ -171,14 +139,15 @@ tr:nth-child(even) {
     cursor: not-allowed;
 }
 
-/* Detail page styles */
+/* 詳細ページスタイル */
 .detail-container {
     flex-direction: column;
     align-items: center;
     padding: 1.25rem;
     box-sizing: border-box;
     margin: 0 auto;
-    width: 800px;
+    max-width: 800px;
+    width: 100%;
 }
 
 .detail-header {
@@ -222,11 +191,6 @@ tr:nth-child(even) {
     margin: 2rem auto 0;
     text-align: center;
     flex-direction: column;
-}
-
-.form-actions {
-    text-align: center;
-    margin-top: 20px;
 }
 
 .back-link,
@@ -276,9 +240,19 @@ tr:nth-child(even) {
     background-color: #000;
 }
 
-/* Edit page styles */
+/* アラートスタイル */
+.edit-table .error {
+    order: 1;
+    font-size: 0.75rem;
+    color: var(--danger-color);
+    display: block;
+    text-align: left;
+    margin-bottom: 0.5rem;
+}
+
 .edit-container {
-    width: 800px;
+    max-width: 800px;
+    width: 90%;
     margin: 0 auto;
     padding: 20px;
 }
@@ -325,134 +299,158 @@ tr:nth-child(even) {
     padding-right: 30px;
 }
 
-.edit-table .error {
-    order: 1;
-    font-size: 0.75rem;
-    color: var(--danger-color);
-    display: block;
-    text-align: left;
-    margin-bottom: 0.5rem;
+.form-actions {
+    text-align: center;
+    margin-top: 20px;
 }
 
-/* Login and Registration page styles */
-.login-container,
-.register-container {
-    max-width: 400px;
-    margin: 2rem auto;
+/* ログインページスタイル */
+
+body.login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100dvh;
+}
+
+.login-container {
+    max-width: 600px;
+    width: 100%;
     padding: 2rem;
-    background-color: #f8f9fa;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.login-form-group,
-.register-form-group {
-    margin-bottom: 1.5rem;
+.login-form-group {
+    margin-bottom: 1rem;
 }
 
-.login-form-group label,
-.register-form-group label {
+.login-form-group label {
     display: block;
-    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
     font-weight: bold;
+    margin-bottom: 8px;
     color: var(--text-dark);
 }
 
-.login-form-group input,
-.login-form-group select,
-.register-form-group input,
-.register-form-group select {
+.login-form-group input {
     width: 100%;
-    padding: 0.75rem;
-    border: 1px solid var(--border-gray);
+    padding: 12px;
+    border: 2px solid #ccc;
     border-radius: 4px;
     font-size: 1rem;
     box-sizing: border-box;
 }
 
-.login-form-group input:focus,
-.login-form-group select:focus,
-.register-form-group input:focus,
-.register-form-group select:focus {
+.login-form-group input:focus {
     outline: none;
     border-color: var(--primary-color);
 }
 
-.login-submit-btn,
-.register-submit-btn {
+.btn-login {
     width: 100%;
-    padding: 0.75rem;
-    background-color: var(--primary-color);
-    color: white;
+    padding: 15px;
+    background-color: var(--submit-color);
+    color: var(--text-dark);
     border: none;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: background-color 0.3s;
+}
+
+.btn-login:hover {
+    background-color: #ffc107;
+}
+
+.register-link {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.register-link a {
+    color: #6c63ff;
+    text-decoration: underline;
+    font-size: 1rem;
+}
+
+.register-link a:hover {
+    color: #5a52d5;
+}
+
+.login-error-message {
+    color: var(--danger-color);
+    font-size: 0.9rem;
+    margin-top: 5px;
+}
+
+.login-success-message {
+    color: var(--success-color);
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 4px;
+}
+
+/* ラジオボタンスタイル - ブラウザ互換性を考慮した整列 */
+.radio-group {
+    display: flex;
+    gap: 30px;
+    margin-top: 8px;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.radio-label {
+    display: inline-flex;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: normal;
+    cursor: pointer;
+    gap: 6px;
+    vertical-align: middle;
+}
+
+.radio-label input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    padding: 0;
+    transform: none;
+    accent-color: var(--primary-color);
+    flex-shrink: 0;
+    vertical-align: middle;
+    position: relative;
+    top: -1px; /* 微調整 */
+}
+
+.radio-label span {
+    margin: 0;
+    vertical-align: middle;
+    line-height: 1.2;
+}
+
+/* セレクトスタイル - カスタム矢印適用 */
+.login-form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ccc;
     border-radius: 4px;
     font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    box-sizing: border-box;
+    background-color: white;
+    appearance: none; /* デフォルト矢印削除 */
+    background: #fff
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Cpath fill='%23333' d='M0 2l4 4 4-4z'/%3E%3C/svg%3E")
+        no-repeat right 15px center; /* カスタム矢印追加 */
+    padding-right: 40px; /* 矢印用スペース確保 */
 }
 
-.login-submit-btn:hover,
-.register-submit-btn:hover {
-    background-color: #0056b3;
-}
-
-.login-link,
-.register-link {
-    display: block;
-    text-align: center;
-    margin-top: 1rem;
-    color: var(--primary-color);
-    text-decoration: none;
-}
-
-.login-link:hover,
-.register-link:hover {
-    text-decoration: underline;
-}
-
-/* ヘッダースタイル */
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
-    background-color: #f8f9fa;
-    border-bottom: 2px solid #dee2e6;
-    margin-bottom: 1rem;
-}
-
-.header h1 {
-    margin: 0;
-    color: var(--text-dark);
-    font-size: 1.5rem;
-}
-
-.user-info {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.user-role {
-    font-weight: bold;
-    color: var(--primary-color);
-    background-color: #e3f2fd;
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.875rem;
-}
-
-.logout-btn {
-    background-color: var(--danger-color);
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.875rem;
-    transition: background-color 0.2s;
-}
-
-.logout-btn:hover {
-    background-color: #c82333;
+.login-form-group select:focus {
+    outline: none;
+    border-color: var(--primary-color);
 }
