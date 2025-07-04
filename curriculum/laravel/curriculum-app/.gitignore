@@ -1,3 +1,7 @@
+# MySQL 데이터베이스 파일들
+**/mysql/**
+mysql/
+**/\#innodb_redo/**
 /.phpunit.cache
 /node_modules
 /public/build
@@ -17,3 +21,8 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+mysql/
+#innodb_redo/
+mysql/
+**/mysql/
+**/#innodb_redo/

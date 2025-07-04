@@ -2,17 +2,37 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Player extends Model
 {
-    use HasFactory;
-    
     protected $table = 'players';
-    
-    public function allPlayer(){
-        $players = Player::all();
-        return $players;
+    public $timestamps = false;
+
+    protected $fillable = [
+        'country_id',
+        'uniform_num',
+        'position',
+        'name',
+        'club',
+        'birth',
+        'height',
+        'weight',
+        'del_flg'
+    ];
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
+
+    public function goals()
+    {
+        return $this->hasMany(Goal::class);
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('del_flg', 0);
     }
 }
