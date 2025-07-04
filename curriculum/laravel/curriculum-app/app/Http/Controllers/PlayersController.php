@@ -12,6 +12,14 @@ use App\Http\Requests\UpdatePlayerRequest;
 
 class PlayersController extends Controller
 {
+    public function __construct()
+    {
+        // 모든 액션에 인증 확인
+        $this->middleware('check.auth');
+        // 편집, 업데이트, 삭제는 관리자만 가능
+        $this->middleware('check.admin')->only(['edit', 'update', 'destroy']);
+    }
+
     public function index(){
         // del_flgが0の選手のみを表示（論理削除済みは除外）
         // Countryとのリレーションも含めて取得
@@ -56,8 +64,22 @@ class PlayersController extends Controller
         if (!$player) {
             return redirect()->route('players.index')->with('error', '選手が見つかりません。');
         }
+
+        // 得点情報を取得
+        $goals = DB::table('goals')
+            ->join('pairings', 'goals.pairing_id', '=', 'pairings.id')
+            ->join('countries as enemy', 'pairings.enemy_country_id', '=', 'enemy.id')
+            ->where('goals.player_id', $id)
+            ->select([
+                'goals.goal_time',
+                'pairings.kickoff',
+                'enemy.name as enemy_country_name'
+            ])
+            ->orderBy('pairings.kickoff')
+            ->orderBy('goals.goal_time')
+            ->get();
         
-        return view('players.detail', compact('player'));
+        return view('players.detail', compact('player', 'goals'));
     }
 
     public function edit($id)
