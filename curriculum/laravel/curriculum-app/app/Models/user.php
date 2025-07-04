@@ -27,4 +27,22 @@ class User extends Model
     {
         return $this->belongsTo(Country::class, 'country_id');
     }
+
+    // 管理者かどうかを確認
+    public function isAdmin()
+    {
+        return $this->role === 0;
+    }
+
+    // 一般ユーザーかどうかを確認
+    public function isUser()
+    {
+        return $this->role === 1;
+    }
+
+    // 役割のテキストを返す
+    public function getRoleTextAttribute()
+    {
+        return $this->role === 0 ? '管理ユーザー' : '一般ユーザー';
+    }
 }
