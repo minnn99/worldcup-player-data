@@ -12,11 +12,19 @@ use App\Http\Requests\UpdatePlayerRequest;
 
 class PlayersController extends Controller
 {
-    public function index()
-    {
-        $players = Player::with('country')
-            ->where('del_flg', 0)  // 論理削除されていない選手のみ表示
-            ->paginate(20);
+    public function index(){
+        // del_flgが0の選手のみを表示（論理削除済みは除外）
+        // Countryとのリレーションも含めて取得
+        $query = Player::with('country')->active();
+        
+        // ログインしているユーザーが一般ユーザー（role=1）の場合、
+        // そのユーザーの国の選手を優先的に表示
+        if (session('user_role') === 1 && session('user_country_id')) {
+            $query->orderByRaw('CASE WHEN country_id = ? THEN 0 ELSE 1 END', [session('user_country_id')])
+                  ->orderBy('id');
+        }
+        
+        $players = $query->paginate(20);
         
         // 各選手ごとに個別のアクセストークンを生成
         $accessTokens = [];
@@ -28,114 +36,71 @@ class PlayersController extends Controller
         
         return view('players.index', compact('players', 'accessTokens'));
     }
-    
-    // 選手詳細情報を表示
-    public function detail(Request $request, $id)
+
+    public function detail($id, Request $request)
     {
-        $player = Player::with(['country'])->find($id);
+        // トークン認証
+        $expectedToken = session("player_access_token_{$id}");
+        $providedToken = $request->query('token');
         
-        if (!$player) {
-            return redirect('/')->with('message', '選手が見つかりません。');
-        }
-
-        // 得点情報を取得
-        $goals = DB::table('goals')
-            ->join('pairings', 'goals.pairing_id', '=', 'pairings.id')
-            ->join('countries as enemy', 'pairings.enemy_country_id', '=', 'enemy.id')
-            ->where('goals.player_id', $id)
-            ->select([
-                'goals.goal_time',
-                'pairings.kickoff',
-                'enemy.name as enemy_country_name'
-            ])
-            ->orderBy('pairings.kickoff')
-            ->orderBy('goals.goal_time')
-            ->get();
-
-        return view('players.detail', compact('player', 'goals'));
-    }
-
-    // 選手情報編集画面を表示（GET通信）
-    public function edit($id)
-    {
-        $player = Player::findOrFail($id);
-        $countries = Country::all();
-        
-        $positions = [
-            'GK' => 'ゴールキーパー',
-            'DF' => 'ディフェンダー',
-            'MF' => 'ミッドフィールダー',
-            'FW' => 'フォワード'
-        ];
-        
-        // 編集ページから詳細ページに戻るためのトークンを生成
-        $token = Str::random(32);
-        session(["player_access_token_{$player->id}" => $token]);
-        
-        return view('players.edit', compact('player', 'countries', 'positions', 'token'));
-    }
-
-    // 選手情報を更新（POST/PUT通信）
-    public function update(UpdatePlayerRequest $request, $id)
-    {
-        $player = Player::findOrFail($id);
-        $player->update($request->validated());
-
-        // 更新後、詳細ページにリダイレクトする際のトークンを生成
-        $token = Str::random(32);
-        session(["player_access_token_{$player->id}" => $token]);
-
-        return redirect()->route('players.detail', ['id' => $player->id, 'token' => $token])
-            ->with('message', '選手情報を更新しました。');
-    }
-
-    // 選手を論理削除（DELETE通信）
-    public function destroy($id) {
-        // 指定されたIDの選手データを取得（論理削除されていないもののみ）
-        $player = Player::active()->find($id);
-        
-        // 選手が見つからない場合
-        if (!$player) {
-            return redirect('/')->with('message', '選手が見つかりません。');
-        }
-
-        // 物理削除ではなく論理削除（del_flgを1に設定）
-        // 直接クエリを使用してupdated_atエラーを回避
-        DB::table('players')
-            ->where('id', $id)
-            ->update(['del_flg' => 1]);
-
-        // 一覧画面にリダイレクトとメッセージ表示
-        return redirect('/')->with('message', '選手データを削除しました。');
-    }
-    
-    public function show($id)
-    {
-        // 該当選手のアクセストークンがセッションにあるか確認
-        $sessionToken = session("player_access_token_{$id}");
-        $requestToken = request('token');
-        
-        // トークンがない、または一致しない場合はアクセスを拒否
-        if (!$sessionToken || $sessionToken !== $requestToken) {
-            return redirect('/')->with('error', '選手一覧から選手を選択してください。');
+        if (!$expectedToken || $expectedToken !== $providedToken) {
+            return redirect()->route('players.index')->with('error', '不正なアクセスです。');
         }
         
-        // トークン使用後に削除（使い捨て）
+        // セッションからトークンを削除（一回限りの使用）
         session()->forget("player_access_token_{$id}");
         
-        // del_flg = 0の選手のみ取得
-        $player = Player::with('country')
-            ->where('del_flg', 0)
-            ->find($id);
+        // del_flg = 0 （論理削除されていない）選手のみ表示
+        $player = Player::with(['country', 'position'])->active()->find($id);
         
-        // 選手が存在しない、または論理削除されている場合
         if (!$player) {
-            return redirect('/')->with('error', 'この選手データは削除されているか存在しません。');
+            return redirect()->route('players.index')->with('error', '選手が見つかりません。');
         }
         
-        // game -> pairingに変更
-        $goals = Goal::with('pairing')->where('player_id', $id)->get();
+        return view('players.detail', compact('player'));
+    }
+
+    public function edit($id)
+    {
+        // del_flg = 0 （論理削除されていない）選手のみ編集可能
+        $player = Player::active()->find($id);
         
-        return view('players.detail', compact('player', 'goals'));
+        if (!$player) {
+            return redirect()->route('players.index')->with('error', '選手が見つかりません。');
+        }
+        
+        $countries = Country::all();
+        $positions = Position::all();
+        
+        return view('players.edit', compact('player', 'countries', 'positions'));
+    }
+
+    public function update(UpdatePlayerRequest $request, $id)
+    {
+        // del_flg = 0 （論理削除されていない）選手のみ更新可能
+        $player = Player::active()->find($id);
+        
+        if (!$player) {
+            return redirect()->route('players.index')->with('error', '選手が見つかりません。');
+        }
+        
+        $player->update($request->validated());
+        
+        return redirect()->route('players.index')->with('success', '選手情報を更新しました。');
+    }
+
+    public function destroy($id)
+    {
+        // del_flg = 0 （論理削除されていない）選手のみ削除可能
+        $player = Player::active()->find($id);
+        
+        if (!$player) {
+            return redirect()->route('players.index')->with('error', '選手が見つかりません。');
+        }
+        
+        // 論理削除（del_flgを1に設定）
+        $player->update(['del_flg' => 1]);
+        
+        return redirect()->route('players.index')->with('success', '選手を削除しました。');
     }
 }

@@ -21,8 +21,5 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-mysql/
-#innodb_redo/
-mysql/
-**/mysql/
-**/#innodb_redo/
+*.sql
+curriculum/sql/

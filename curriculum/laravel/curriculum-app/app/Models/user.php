@@ -22,33 +22,9 @@ class User extends Model
         'password'
     ];
 
-    // パスワードを自動的にハッシュ化する
-    public function setPasswordAttribute($value)
-    {
-        $this->attributes['password'] = Hash::make($value);
-    }
-
-    // 国とのリレーションを定義
+    // Countryとのリレーション
     public function country()
     {
-        return $this->belongsTo(Country::class);
-    }
-
-    // 管理者かどうかを判定する
-    public function isAdmin()
-    {
-        return $this->role === 0;
-    }
-
-    // 一般ユーザーかどうかを判定する
-    public function isUser()
-    {
-        return $this->role === 1;
-    }
-
-    // 役割のテキストを返す
-    public function getRoleTextAttribute()
-    {
-        return $this->role === 0 ? '管理ユーザー' : '一般ユーザー';
+        return $this->belongsTo(Country::class, 'country_id');
     }
 }
