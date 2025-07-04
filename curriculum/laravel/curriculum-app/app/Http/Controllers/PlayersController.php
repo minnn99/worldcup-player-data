@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Player;
 use App\Models\Country;
 use App\Models\Goal;
-use App\Models\Position;use Illuminate\Support\Str;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\UpdatePlayerRequest;
 
@@ -59,7 +59,7 @@ class PlayersController extends Controller
         session()->forget("player_access_token_{$id}");
         
         // del_flg = 0 （論理削除されていない）選手のみ表示
-        $player = Player::with(['country', 'position'])->active()->find($id);
+        $player = Player::with(['country'])->active()->find($id);
         
         if (!$player) {
             return redirect()->route('players.index')->with('error', '選手が見つかりません。');
@@ -92,7 +92,12 @@ class PlayersController extends Controller
         }
         
         $countries = Country::all();
-        $positions = Position::all();
+        $positions = [
+            'GK' => 'ゴールキーパー',
+            'DF' => 'ディフェンダー', 
+            'MF' => 'ミッドフィールダー',
+            'FW' => 'フォワード'
+        ];
         
         return view('players.edit', compact('player', 'countries', 'positions'));
     }
