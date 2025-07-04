@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Player;
 use App\Models\Country;
 use App\Models\Goal;
-use Illuminate\Support\Str;
+use App\Models\Position;use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\UpdatePlayerRequest;
 
