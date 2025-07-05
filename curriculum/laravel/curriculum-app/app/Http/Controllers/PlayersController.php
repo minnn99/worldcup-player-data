@@ -26,10 +26,9 @@ class PlayersController extends Controller
         $query = Player::with('country')->active();
         
         // ログインしているユーザーが一般ユーザー（role=1）の場合、
-        // そのユーザーの国の選手を優先的に表示
+        // そのユーザーの国の選手のみを表示
         if (session('user_role') === 1 && session('user_country_id')) {
-            $query->orderByRaw('CASE WHEN country_id = ? THEN 0 ELSE 1 END', [session('user_country_id')])
-                  ->orderBy('id');
+            $query->where('country_id', session('user_country_id'));
         }
         
         $players = $query->paginate(20);
